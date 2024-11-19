@@ -1,0 +1,39 @@
+services:
+  backend:
+    build:
+      context: ./backend  # Path to your backend folder
+    container_name: ripple_app_backend
+    ports:
+      - "8000:8000"  # Maps container's port to localhost
+    volumes:
+      - ./backend:/app  # Keeps backend code synced during development
+    env_file:
+      - ./backend/env.dev  # Environment variables for Django
+    depends_on:
+      - db  # Ensures db service is up before backend starts
+
+#   frontend:
+#     build:
+#       context: ./frontend  # Path to your frontend folder
+#     container_name: ripple_app_frontend
+#     ports:
+#       - "3000:3000"  # Maps container's port to localhost
+#     volumes:
+#       - ./frontend:/app  # Keeps frontend code synced during development
+#     depends_on:
+#       - backend  # Ensures backend is available before starting the frontend
+
+  db:
+    image: postgres:13  # PostgreSQL version of choice
+    container_name: ripple_app_db
+    ports:
+      - "5435:5432"  # Maps PostgreSQL default port
+    environment:
+      POSTGRES_USER: twitter_user
+      POSTGRES_PASSWORD: twitter_pass
+      POSTGRES_DB: twitter_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data  # Persist database data
+
+volumes:
+  postgres_data:
