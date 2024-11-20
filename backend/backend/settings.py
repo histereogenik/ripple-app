@@ -12,6 +12,20 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 import os
 from pathlib import Path
+from datetime import timedelta
+# from dotenv import load_dotenv
+
+# # Load environment variables from `env.dev`
+# env_path = Path('..') / 'env.dev'
+# load_dotenv(dotenv_path=env_path)
+
+# Print environment variables for debugging purposes
+# print("DEBUG: SQL_USER =", os.getenv("SQL_USER"))
+# print("DEBUG: SQL_PASSWORD =", os.getenv("SQL_PASSWORD"))
+# print("DEBUG: SQL_DATABASE =", os.getenv("SQL_DATABASE"))
+# print("DEBUG: SQL_HOST =", os.getenv("SQL_HOST"))
+# print("DEBUG: SQL_PORT =", os.getenv("SQL_PORT"))
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,8 +40,7 @@ SECRET_KEY = "django-insecure-yfg1v=7f3%7j91c63kzgb!1yajuj5u#=l#1u#^!0f_*u$to(ha
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
-
+ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', 'localhost').split()
 
 # Application definition
 
@@ -39,6 +52,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
+    "register",
 ]
 
 MIDDLEWARE = [
@@ -56,7 +70,7 @@ ROOT_URLCONF = "backend.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [BASE_DIR / 'templates'],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -78,10 +92,10 @@ WSGI_APPLICATION = "backend.wsgi.application"
 DATABASES = {
     "default": {
         'ENGINE': os.getenv('SQL_ENGINE', 'django.db.backends.postgresql'),
-        'NAME': os.getenv('SQL_DATABASE', 'twitter_db'),
-        'USER': os.getenv('SQL_USER', 'twitter_user'),
-        'PASSWORD': os.getenv('SQL_PASSWORD', 'twitter_pass'),
-        'HOST': os.getenv('SQL_HOST', 'localhost'),  # 'db' for Docker, 'localhost' for local runs
+        'NAME': os.getenv('SQL_DATABASE', 'ripple_dev_db'),
+        'USER': os.getenv('SQL_USER', 'ripple_dev'),
+        'PASSWORD': os.getenv('SQL_PASSWORD', 'ripple_dev'),
+        'HOST': os.getenv('SQL_HOST', 'localhost'),
         'PORT': os.getenv('SQL_PORT', '5432'),
     }
 }
@@ -123,9 +137,25 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 
+# DRF Settings
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+}
+
+# JWT Authentication Configuration
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'AUTH_HEADER_TYPES': ('Bearer',),
+}
+
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
-ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', 'localhost').split()
