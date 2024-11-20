@@ -29,9 +29,9 @@ services:
     ports:
       - "5435:5432"  # Maps PostgreSQL default port
     environment:
-      POSTGRES_USER: twitter_user
-      POSTGRES_PASSWORD: twitter_pass
-      POSTGRES_DB: twitter_db
+      POSTGRES_USER: ripple_dev
+      POSTGRES_PASSWORD: ripple_dev
+      POSTGRES_DB: ripple_dev_db
     volumes:
       - postgres_data:/var/lib/postgresql/data  # Persist database data
 
