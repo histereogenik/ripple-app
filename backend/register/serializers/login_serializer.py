@@ -17,7 +17,7 @@ class LoginSerializer(serializers.Serializer):
                                 username=username, password=password)
             
             if not user:
-                msg = _('Unable to log in with providade credentials.')
+                msg = _('Unable to log in with provided credentials.')
                 raise serializers.ValidationError(msg, code='authorization')
             
         else:

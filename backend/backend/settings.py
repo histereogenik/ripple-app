@@ -92,10 +92,10 @@ WSGI_APPLICATION = "backend.wsgi.application"
 
 DATABASES = {
     "default": {
-        'ENGINE': os.getenv('SQL_ENGINE', 'django.db.backends.postgresql'),
-        'NAME': os.getenv('SQL_DATABASE', 'ripple_dev_db'),
-        'USER': os.getenv('SQL_USER', 'ripple_dev'),
-        'PASSWORD': os.getenv('SQL_PASSWORD', 'ripple_dev'),
+        'ENGINE': os.getenv('SQL_ENGINE', 'django.db.backends.sqlite3'),
+        'NAME': os.getenv('SQL_DATABASE', BASE_DIR / 'db.sqlite3'),
+        'USER': os.getenv('SQL_USER', 'user'),
+        'PASSWORD': os.getenv('SQL_PASSWORD', 'password'),
         'HOST': os.getenv('SQL_HOST', 'localhost'),
         'PORT': os.getenv('SQL_PORT', '5432'),
     }
