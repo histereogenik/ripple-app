@@ -1,7 +1,7 @@
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase, APIClient
-from register.factories import UserFactory
+from common.factories import UserFactory
 
 
 class LoginViewTest(APITestCase):

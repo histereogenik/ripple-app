@@ -1,7 +1,7 @@
 from rest_framework.test import APITestCase
 from rest_framework import status
 from django.urls import reverse
-from register.factories import UserFactory
+from common.factories import UserFactory
 import json
 
 class RegisterViewTest(APITestCase):
