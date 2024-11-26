@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "register",
     "newsfeed",
+    "user_profile"
 ]
 
 MIDDLEWARE = [

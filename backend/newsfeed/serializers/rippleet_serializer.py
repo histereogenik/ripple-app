@@ -6,7 +6,7 @@ class RippleetSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Rippleet
-        fields = ['id', 'content', 'created_at', 'updated_at', 'is_edited']
+        fields = ['id', 'author', 'content', 'created_at', 'updated_at', 'is_edited']
         read_only_fields = ['author', 'created_at', 'updated_at', 'is_edited']
 
     def get_is_edited(self, obj):
