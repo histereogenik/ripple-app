@@ -1,2 +1,2 @@
-from .user_profile_serializer import UserProfileSerializer
-from .follow_serializer import FollowSerializer
+from .profile_serializer import ProfileSerializer
+from .follow_action_serializer import FollowActionSerializer

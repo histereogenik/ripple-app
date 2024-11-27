@@ -1,6 +1,7 @@
-from django.urls import path
-from user_profile.views.follow_view import FollowUnfollowView
+from rest_framework.routers import DefaultRouter
+from user_profile.views import UserProfileViewSet
 
-urlpatterns = [
-    path('follow/', FollowUnfollowView.as_view(), name='follow_unfollow'),
-]
+router = DefaultRouter()
+router.register(r'profiles', UserProfileViewSet, basename='userprofile')
+
+urlpatterns = router.urls

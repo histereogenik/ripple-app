@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from user_profile.models import UserProfile
 
-class FollowSerializer(serializers.Serializer):
+class FollowActionSerializer(serializers.Serializer):
     target_user_id = serializers.IntegerField()
 
     def validate_target_user_id(self, value):
@@ -15,9 +15,14 @@ class FollowSerializer(serializers.Serializer):
         user_profile = self.context['request'].user.profile
         target_profile = self.target_user
 
-        if target_profile in user_profile.followers.all():
-            user_profile.followers.remove(target_profile)
-        else:
-            user_profile.followers.add(target_profile)
+        if target_profile == user_profile:
+            raise serializers.ValidationError("You cannot follow yourself.")
 
-        return target_profile
+        if target_profile in user_profile.following.all():
+            user_profile.following.remove(target_profile)
+            action_status = "unfollowed"
+        else:
+            user_profile.following.add(target_profile)
+            action_status = "followed"
+
+        return {"target_user": target_profile.user.username, "action_status": action_status}
