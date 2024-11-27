@@ -1,3 +1,4 @@
+from django.http import Http404
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import status
@@ -10,6 +11,25 @@ class UserProfileViewSet(ModelViewSet):
     queryset = UserProfile.objects.all()
     serializer_class = ProfileSerializer
     permission_classes = [IsAuthenticated]
+
+    lookup_field = 'user_id'
+
+    def get_object(self):
+        """Overrides get_object to get UserProfile by User's ID"""
+        user_id = self.kwargs.get(self.lookup_field)
+        try:
+            return UserProfile.objects.get(user__id=user_id)
+        except UserProfile.DoesNotExist:
+            raise Http404("UserProfile does not exist")
+
+
+    def update(self, request, *args, **kwargs):
+        return Response({"message": "Profile updates are not allowed."},
+                        status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+    def partial_update(self, request, *args, **kwargs):
+        return Response({"message": "Profile updates are not allowed."},
+                        status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
     @action(detail=True, methods=['post'], permission_classes=[IsAuthenticated])
     def follow(self, request, pk=None):
