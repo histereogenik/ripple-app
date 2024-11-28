@@ -7,6 +7,7 @@ class Rippleet(models.Model):
     content = models.TextField(max_length=280)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(default=timezone.now)
+    likes = models.ManyToManyField(User, related_name='liked_rippleets', blank=True)
 
     def save(self, *args, **kwargs):
         if self.pk:
