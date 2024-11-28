@@ -15,7 +15,6 @@ class UserProfileViewSet(ModelViewSet):
     lookup_field = 'user_id'
 
     def get_object(self):
-        """Overrides get_object to get UserProfile by User's ID"""
         user_id = self.kwargs.get(self.lookup_field)
         try:
             return UserProfile.objects.get(user__id=user_id)
@@ -32,8 +31,8 @@ class UserProfileViewSet(ModelViewSet):
                         status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
     @action(detail=True, methods=['post'], permission_classes=[IsAuthenticated])
-    def follow(self, request, pk=None):
-        serializer = FollowActionSerializer(data={'target_user_id': pk}, context={'request': request})
+    def follow(self, request, user_id=None):
+        serializer = FollowActionSerializer(data={'target_user_id': user_id}, context={'request': request})
         serializer.is_valid(raise_exception=True)
 
         follow_data = serializer.save()
