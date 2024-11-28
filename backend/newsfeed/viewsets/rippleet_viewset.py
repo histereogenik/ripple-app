@@ -4,6 +4,7 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.pagination import CursorPagination
 from newsfeed.models import Rippleet
 from newsfeed.serializers import RippleetSerializer
+from newsfeed.permissions import IsAuthorOrReadOnly
 from django.utils import timezone
 
 class RippleetPagination(CursorPagination):
@@ -12,7 +13,7 @@ class RippleetPagination(CursorPagination):
 
 class RippleetViewSet(viewsets.ModelViewSet):
     authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsAuthorOrReadOnly]
     serializer_class = RippleetSerializer
     queryset = Rippleet.objects.all()
     pagination_class = RippleetPagination
