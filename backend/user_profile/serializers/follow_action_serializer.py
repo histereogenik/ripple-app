@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from user_profile.models import UserProfile
 
+
 class FollowActionSerializer(serializers.Serializer):
     target_user_id = serializers.IntegerField()
 
@@ -12,7 +13,7 @@ class FollowActionSerializer(serializers.Serializer):
         return value
 
     def save(self, **kwargs):
-        user_profile = self.context['request'].user.profile
+        user_profile = self.context["request"].user.profile
         target_profile = self.target_user
 
         if target_profile == user_profile:
@@ -25,4 +26,7 @@ class FollowActionSerializer(serializers.Serializer):
             user_profile.following.add(target_profile)
             action_status = "followed"
 
-        return {"target_user": target_profile.user.username, "action_status": action_status}
+        return {
+            "target_user": target_profile.user.username,
+            "action_status": action_status,
+        }
