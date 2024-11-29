@@ -2,7 +2,7 @@ name: Python Pull Request Workflow
 on: [pull_request]
 
 jobs:
-  quality-check:
+  qa:
     name: Quality and Testing
     runs-on: ubuntu-latest
     strategy:
@@ -21,11 +21,12 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/.cache/pypoetry
-          key: ${{ runner.os }}-poetry-${{ hashFiles('**/poetry.lock') }}
+          key: ${{ runner.os }}-poetry-${{ hashFiles('**/backend/poetry.lock') }}
           restore-keys: |
             ${{ runner.os }}-poetry-
 
       - name: Install dependencies using Poetry
+        working-directory: backend
         run: |
           pip install --upgrade pip
           pip install poetry
@@ -34,13 +35,16 @@ jobs:
           POETRY_VIRTUALENVS_CREATE: false
 
       - name: View Poetry --help
+        working-directory: backend
         run: poetry --help
 
       - name: Install dependencies
+        working-directory: backend
         shell: bash
         run: python -m poetry install
 
       - name: Wemake Python Styleguide
+        working-directory: backend
         uses: wemake-services/wemake-python-styleguide@0.16.0
         continue-on-error: true
         with:
@@ -49,9 +53,11 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Lint with Black
+        working-directory: backend
         run: |
           poetry run black --check .
 
       - name: Run Tests
+        working-directory: backend
         run: |
           poetry run python manage.py test
