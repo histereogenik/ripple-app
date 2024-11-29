@@ -8,9 +8,11 @@ from newsfeed.permissions import IsAuthorOrReadOnly
 from .mixins import LikeToggleMixin
 from django.utils import timezone
 
+
 class RippleetPagination(CursorPagination):
     page_size = 10
-    ordering = '-created_at'
+    ordering = "-created_at"
+
 
 class RippleetViewSet(LikeToggleMixin, viewsets.ModelViewSet):
     authentication_classes = [JWTAuthentication]

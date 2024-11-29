@@ -4,6 +4,7 @@ from django.urls import reverse
 from common.factories import UserFactory
 from newsfeed.factories import RippleetFactory
 
+
 class RippleetEndlessScrollTest(APITestCase):
     client = APIClient()
 
@@ -14,13 +15,13 @@ class RippleetEndlessScrollTest(APITestCase):
         self.rippleets = RippleetFactory.create_batch(25, author=self.user)
 
     def test_endless_scroll_pagination(self):
-        url = reverse('rippleet-list')
+        url = reverse("rippleet-list")
 
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        self.assertEqual(len(response.data['results']), 10)
-        next_url = response.data['next']
+        self.assertEqual(len(response.data["results"]), 10)
+        next_url = response.data["next"]
 
         page = 2
         while next_url:
@@ -28,11 +29,11 @@ class RippleetEndlessScrollTest(APITestCase):
             self.assertEqual(response.status_code, status.HTTP_200_OK)
 
             if page <= 2:
-                self.assertEqual(len(response.data['results']), 10)
+                self.assertEqual(len(response.data["results"]), 10)
             else:
-                self.assertEqual(len(response.data['results']), 5)
+                self.assertEqual(len(response.data["results"]), 5)
 
-            next_url = response.data['next']
+            next_url = response.data["next"]
             page += 1
 
         self.assertIsNone(next_url)
