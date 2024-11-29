@@ -33,12 +33,16 @@ jobs:
           python -m ensurepip
           python -m pip install --upgrade pip
           python -m pip install --upgrade poetry
+        working-directory: backend
 
       - name: View Poetry Help
         run: poetry --help
+        working-directory: backend
 
       - name: Install Dependencies
         run: poetry install
+        working-directory: backend
 
       - name: Run Tests
         run: poetry run python manage.py test
+        working-directory: backend

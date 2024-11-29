@@ -44,11 +44,11 @@ jobs:
         run: python -m poetry install
 
       - name: Wemake Python Styleguide
-        working-directory: backend
         uses: wemake-services/wemake-python-styleguide@0.16.0
         continue-on-error: true
         with:
           reporter: "github-pr-review"
+          path: "backend"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
