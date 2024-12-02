@@ -1,7 +1,7 @@
 # `python-base` sets up all our shared environment variables
-FROM python:3.10.5-slim AS python-base
+FROM python:3.12.0-slim AS python-base
 
-    # python
+# python
 ENV PYTHONUNBUFFERED=1 \
     # prevents python creating .pyc files
     PYTHONDONTWRITEBYTECODE=1 \
@@ -33,10 +33,10 @@ ENV PATH="$POETRY_HOME/bin:$VENV_PATH/bin:$PATH"
 
 RUN apt-get update \
     && apt-get install --no-install-recommends -y \
-        # deps for installing poetry
-        curl \
-        # deps for building python deps
-        build-essential
+    # deps for installing poetry
+    curl \
+    # deps for building python deps
+    build-essential
 
 RUN apt-get update && apt-get install -y git && rm -rf /var/lib/apt/lists/*
 
@@ -67,4 +67,4 @@ COPY . /app/
 
 EXPOSE 8000
 
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["poetry", "run", "gunicorn", "-c", "gunicorn_config.py", "backend.wsgi:application"]
