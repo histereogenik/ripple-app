@@ -4,7 +4,9 @@ bind = "0.0.0.0:8000"
 # Worker settings
 import multiprocessing
 
-workers = multiprocessing.cpu_count() * 2 + 1  # Dynamically set workers based on CPU cores
+workers = (
+    multiprocessing.cpu_count() * 2 + 1
+)  # Dynamically set workers based on CPU cores
 threads = 2  # Number of threads per worker for handling multiple requests
 
 # Timeout settings
@@ -12,7 +14,7 @@ timeout = 120  # Increase if requests take longer to process
 
 # Logging
 accesslog = "-"  # Log access requests to stdout
-errorlog = "-"   # Log errors to stderr
+errorlog = "-"  # Log errors to stderr
 loglevel = "info"  # Set logging level to info (debug, warning, error are other options)
 
 # Graceful shutdown settings
