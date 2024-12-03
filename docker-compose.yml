@@ -7,21 +7,24 @@ services:
       - "8000:8000"  # Maps container's port to localhost
     volumes:
       - ./backend:/app  # Keeps backend code synced during development
+      - static_volume:/app/staticfiles  # Shared volume for static files
     env_file:
       - ./backend/env.dev  # Environment variables for Django
+    environment:
+      - DJANGO_DEBUG=False
     depends_on:
       - db  # Ensures db service is up before backend starts
 
-#   frontend:
-#     build:
-#       context: ./frontend  # Path to your frontend folder
-#     container_name: ripple_app_frontend
-#     ports:
-#       - "3000:3000"  # Maps container's port to localhost
-#     volumes:
-#       - ./frontend:/app  # Keeps frontend code synced during development
-#     depends_on:
-#       - backend  # Ensures backend is available before starting the frontend
+  nginx:
+    image: nginx:latest
+    container_name: ripple-nginx
+    ports:
+      - "80:8080"  # Nginx serves on port 80
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d  # Custom Nginx configs
+      - static_volume:/app/staticfiles  # Share static files
+    depends_on:
+      - backend
 
   db:
     image: postgres:13  # PostgreSQL version of choice
@@ -37,3 +40,15 @@ services:
 
 volumes:
   postgres_data:
+  static_volume:
+
+#   frontend:
+#     build:
+#       context: ./frontend  # Path to your frontend folder
+#     container_name: ripple_app_frontend
+#     ports:
+#       - "3000:3000"  # Maps container's port to localhost
+#     volumes:
+#       - ./frontend:/app  # Keeps frontend code synced during development
+#     depends_on:
+#       - backend  # Ensures backend is available before starting the frontend

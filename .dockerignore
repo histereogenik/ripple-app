@@ -1,25 +1,46 @@
-# Ignorar arquivos de ambiente
+# Ignore environment files
 .env
 .env.dev
 
-# Ignorar diretórios de dependências
+# Ignore Python virtual environments
 venv/
+.venv/
+backend/.venv/
+
+# Ignore Python cache and compiled files
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
 
-# Ignorar arquivos de logs
+# Ignore local database files
+*.sqlite3
+
+# Ignore static files generated during collectstatic
+staticfiles/
+static/
+backend/staticfiles/
+
+# Ignore log files
 *.log
 
-# Ignorar arquivos de sistema
+# Ignore temporary and swap files
+*.swp
+*.tmp
+
+# Ignore system files
 .DS_Store
 Thumbs.db
 
-# Ignorar diretórios de teste
+# Ignore test directories
 tests/
 test/
 
-# Ignorar diretórios do sistema de controle de versão
+# Ignore version control system files
 .git/
 .gitignore
+
+# Ignore build artifacts
+build/
+dist/
+*.egg-info/
