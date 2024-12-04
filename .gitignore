@@ -61,6 +61,12 @@ local_settings.py
 db.sqlite3
 db.sqlite3-journal
 
+# Ignore static files directory created by collectstatic
+staticfiles/
+static/
+backend/staticfiles/
+
+
 # Flask stuff:
 instance/
 .webassets-cache
@@ -124,11 +130,13 @@ celerybeat.pid
 # Environments
 .env
 .venv
+.venv/
 env/
 venv/
 ENV/
 env.bak/
 venv.bak/
+backend/.venv/
 
 # Spyder project settings
 .spyderproject
