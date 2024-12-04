@@ -37,7 +37,7 @@ WORKDIR $PYSETUP_PATH
 COPY poetry.lock pyproject.toml ./
 
 # Install Python dependencies using Poetry
-RUN poetry install --no-dev && poetry run pip install --upgrade pip
+RUN poetry install && poetry run pip install --upgrade pip
 
 # Install runtime dependencies
 RUN poetry run pip install psycopg2-binary
@@ -45,6 +45,8 @@ RUN poetry run pip install psycopg2-binary
 # Application working directory
 WORKDIR /app
 COPY . /app/
+
+ENV VIRTUAL_ENV=/opt/pysetup/.venv
 
 # Collect static files
 RUN poetry run python manage.py collectstatic --noinput
