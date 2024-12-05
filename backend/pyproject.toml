@@ -19,6 +19,7 @@ flake8 = "^7.1.1"
 gunicorn = "^23.0.0"
 daphne = "^4.1.2"
 twisted = {extras = ["http2", "tls"], version = "^24.10.0"}
+django-cors-headers = "^4.6.0"
 
 
 [build-system]
