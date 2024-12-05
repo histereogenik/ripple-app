@@ -26,6 +26,20 @@ services:
     depends_on:
       - backend
 
+  frontend:
+    build:
+      context: ./frontend
+    container_name: ripple_app_frontend
+    ports:
+      - "5173:5173"  # Expose Vite dev server
+    volumes:
+      - ./frontend:/app  # Sync frontend code
+    environment:
+      - VITE_API_BASE_URL=http://localhost:8000/api
+    command: npm run dev
+    depends_on:
+      - backend
+
   db:
     image: postgres:13  # PostgreSQL version of choice
     container_name: ripple_app_db
@@ -41,14 +55,3 @@ services:
 volumes:
   postgres_data:
   static_volume:
-
-#   frontend:
-#     build:
-#       context: ./frontend  # Path to your frontend folder
-#     container_name: ripple_app_frontend
-#     ports:
-#       - "3000:3000"  # Maps container's port to localhost
-#     volumes:
-#       - ./frontend:/app  # Keeps frontend code synced during development
-#     depends_on:
-#       - backend  # Ensures backend is available before starting the frontend
