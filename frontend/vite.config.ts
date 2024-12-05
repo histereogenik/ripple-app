@@ -10,7 +10,7 @@ export default defineConfig({
     strictPort: true,
     proxy: {
       '/api': {
-        target: 'http://localhost:8000', // Update to HTTP and correct local port
+        target: 'http://localhost:8000',
         changeOrigin: true,
         secure: false,
       },
