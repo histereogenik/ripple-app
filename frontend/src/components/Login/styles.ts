@@ -10,6 +10,7 @@ export const LoginContainer = styled.div`
     padding: 0 20px;
 
     @media (max-width: ${breakpoints.tablet}) {
+        height: 0;
         padding: 0 10px;
     }
 `;
@@ -89,7 +90,7 @@ export const RegisterLink = styled.span`
 `;
 
 export const ErrorMessage = styled.p`
-    color: red;
+    color: ${colors.error};
     font-size: 14px;
     margin-bottom: 10px;
     text-align: center;

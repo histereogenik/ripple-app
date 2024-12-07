@@ -1,10 +1,10 @@
 import { Route, Routes } from 'react-router-dom';
-import Login from './components/Login';
+import LoginPage from './components/LoginPage';
 import TestComponent from './components/TestComponent';
 
 const RoutesComponent = () => (
     <Routes>
-        <Route path="/" element={<Login />} />
+        <Route path="/" element={<LoginPage />} />
         <Route path="/test" element={<TestComponent />} />
     </Routes>
 );

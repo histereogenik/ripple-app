@@ -8,6 +8,7 @@ export const colors = {
     lightgray: '#444444',
     gray: '#333333',
     white: '#ffffff',
+    error: "#ff4c5c",
 };
 
 export const breakpoints = {
