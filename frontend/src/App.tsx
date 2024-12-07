@@ -1,10 +1,9 @@
-import './App.css'
-import TestComponent from './components/TestComponent'
+import RoutesComponent from './routes'
 
 function App() {
   return (
     <>
-      <TestComponent/>
+      <RoutesComponent />
     </>
   )
 }

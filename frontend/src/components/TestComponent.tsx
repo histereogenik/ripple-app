@@ -1,27 +1,14 @@
-import { useState, useEffect } from "react";
-import axios from "../api/axios";
+import { useTestQuery } from "../services/apiSlice";
 
 const TestComponent = () => {
-    const [message, setMessage] = useState<string | null>(null);
-
-    useEffect(() => {
-        const fetchTestMessage = async () => {
-            try {
-                const response = await axios.get("/auth/test/");
-                setMessage(response.data.message);
-            } catch (error) {
-                console.error("Error fetching the test endpoint:", error);
-                setMessage("Failed to fetch test message.");
-            }
-        };
-
-        fetchTestMessage();
-    }, []);
+    const { data, error, isLoading } = useTestQuery();
 
     return (
         <div>
             <h1>Test Endpoint</h1>
-            <p>{message || "Loading..."}</p>
+            {isLoading && <p>Loading...</p>}
+            {error && <p>Error fetching the test endpoint.</p>}
+            {data && <p>{data.message}</p>}
         </div>
     );
 };
