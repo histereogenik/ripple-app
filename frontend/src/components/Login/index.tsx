@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useLoginMutation } from "../../services/apiSlice";
 import { useNavigate } from "react-router-dom";
 import * as S from "./styles";
+import { InputField, Button, Form } from "../../ui";
 
 const Login = () => {
     const navigate = useNavigate();
@@ -31,9 +32,9 @@ const Login = () => {
 
     return (
         <S.LoginContainer>
-            <S.LoginForm onSubmit={handleSubmit}>
+            <Form onSubmit={handleSubmit}>
                 <S.LoginTitle>Welcome Back!</S.LoginTitle>
-                <S.InputField
+                <InputField
                     type="text"
                     name="username"
                     placeholder="Username"
@@ -41,7 +42,7 @@ const Login = () => {
                     onChange={handleInputChange}
                     required
                 />
-                <S.InputField
+                <InputField
                     type="password"
                     name="password"
                     placeholder="Password"
@@ -50,13 +51,13 @@ const Login = () => {
                     required
                 />
                 {error && <S.ErrorMessage>{error}</S.ErrorMessage>}
-                <S.SubmitButton type="submit" disabled={isLoading}>
+                <Button type="submit" disabled={isLoading}>
                     {isLoading ? "Logging in..." : "Login"}
-                </S.SubmitButton>
+                </Button>
                 <S.RegisterLink onClick={() => navigate("/register")}>
                     Don’t have an account? Register now!
                 </S.RegisterLink>
-            </S.LoginForm>
+            </Form>
         </S.LoginContainer>
     );
 };
