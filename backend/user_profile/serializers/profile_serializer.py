@@ -1,8 +1,14 @@
 from rest_framework import serializers
+from django.contrib.auth.models import User
 from user_profile.models import UserProfile
 
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["username"]
 
 class ProfileSerializer(serializers.ModelSerializer):
+    user = UserSerializer()
     followers_count = serializers.SerializerMethodField()
     following_count = serializers.SerializerMethodField()
     is_followed_by_user = serializers.SerializerMethodField()

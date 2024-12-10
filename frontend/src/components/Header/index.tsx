@@ -36,7 +36,7 @@ const Header = () => {
             <S.UserContainer>
                 <S.UserInfo>
                     <S.ProfilePicture src={userProfile?.profile_picture} alt={`${userProfile?.user}'s profile`} />
-                    <S.UserName>{userProfile?.user}</S.UserName>
+                    <S.UserName>{userProfile?.user.username}</S.UserName>
                 </S.UserInfo>
                 <S.DropdownMenu>
                     <S.MenuItem onClick={handleEditProfile}>

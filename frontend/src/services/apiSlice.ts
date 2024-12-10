@@ -1,21 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { RootReducer } from '../store';
-
-export interface LoginResponse {
-    username: string;
-    access: string;
-    refresh: string;
-}
-export interface TestResponse {
-    message: string;
-}
-export interface ProfileType {
-    id: number;
-    user: string;
-    profile_picture: string;
-    followers: number[];
-    following: number[];
-}
+import { LoginResponse, ProfileType, TestResponse } from '../types/apiInterfaces';
 
 export const apiSlice = createApi({
     reducerPath: 'api',

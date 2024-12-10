@@ -12,7 +12,7 @@ export const HeaderContainer = styled.header`
 
     @media (max-width: ${breakpoints.tablet}) {
         flex-direction: column;
-        align-items: stretch;
+        align-items: center;
         padding: 1rem;
     }
 `;
