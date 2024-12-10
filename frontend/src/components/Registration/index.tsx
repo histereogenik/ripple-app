@@ -49,8 +49,8 @@ const Registration = () => {
                 password_confirm: formData.password_confirm,
             }).unwrap();
 
-            setSuccessMessage("Registration successful! Redirecting to the dashboard...");
-            setTimeout(() => navigate("/newsfeed"), 3000)
+            setSuccessMessage("Registration successful! Please, proceed to login.");
+            setTimeout(() => navigate("/login"), 3000)
         } catch (err) {
             const errorResponse = err as RegistrationError;
 

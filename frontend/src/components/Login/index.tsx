@@ -3,9 +3,12 @@ import { useLoginMutation } from "../../services/apiSlice";
 import { useNavigate } from "react-router-dom";
 import * as S from "./styles";
 import { InputField, Button, Form } from "../../ui";
+import { setCredentials } from "../../store/reducers/authSlice";
+import { useDispatch } from "react-redux";
 
 const Login = () => {
-    const navigate = useNavigate();
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
     const [login, { isLoading }] = useLoginMutation();
     const [formData, setFormData] = useState({ username: "", password: "" });
     const [error, setError] = useState<string | null>(null);
@@ -22,10 +25,11 @@ const Login = () => {
         setError(null);
 
         try {
-            await login(formData).unwrap();
+            const result = await login(formData).unwrap();
+            dispatch(setCredentials({ access: result.access, refresh: result.refresh }));
             navigate("/newsfeed");
         } catch (error) {
-            console.error("Login error:", error)
+            console.error("Login error:", error);
             setError("Invalid username or password. Please try again.");
         }
     };
