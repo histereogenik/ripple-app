@@ -1,14 +1,23 @@
 import { useEffect, useRef, useState } from "react";
-import { useCreateRippleetMutation, useGetRippleetsQuery } from "../../../services/apiSlice";
+import { useCreateRippleetMutation,
+    useDeleteRippleetMutation,
+    useGetRippleetsQuery,
+    useLikeRippleetMutation,
+    useUpdateRippleetMutation
+} from "../../../services/apiSlice";
 import EmojiPicker from "emoji-picker-react";
-import { FaSmile } from "react-icons/fa";
+import { FaSmile, FaHeart, FaRegHeart } from "react-icons/fa";
 import * as S from "./styles";
+import { Button } from "../../../ui";
 
 const Rippleets = () => {
     const [content, setContent] = useState("");
     const [showEmojiPicker, setShowEmojiPicker] = useState(false);
     const emojiPickerRef = useRef<HTMLDivElement>(null);
     const [createRippleet] = useCreateRippleetMutation();
+    const [likeRippleet] = useLikeRippleetMutation();
+    const [deleteRippleet] = useDeleteRippleetMutation();
+    const [updateRippleet] = useUpdateRippleetMutation();
     const [page, setPage] = useState(1);
     const { data, isFetching, isError } = useGetRippleetsQuery();
 
@@ -30,6 +39,30 @@ const Rippleets = () => {
             setContent("");
         } catch (error) {
             console.error("Error creating rippleet:", error);
+        }
+    };
+
+    const handleLike = async (id: number, liked: boolean) => {
+        try {
+            await likeRippleet({ id, liked });
+        } catch (error) {
+            console.error("Error liking rippleet:", error);
+        }
+    };
+
+    const handleDelete = async (id: number) => {
+        try {
+            await deleteRippleet({ id });
+        } catch (error) {
+            console.error("Error deleting rippleet:", error);
+        }
+    };
+
+    const handleUpdate = async (id: number, newContent: string) => {
+        try {
+            await updateRippleet({ id, content: newContent });
+        } catch (error) {
+            console.error("Error updating rippleet:", error);
         }
     };
 
@@ -82,14 +115,25 @@ const Rippleets = () => {
                     <S.RippleetItem key={rippleet.id}>
                         <S.Author>{rippleet.author}</S.Author>
                         <S.Content>{rippleet.content}</S.Content>
-                        <S.Timestamp>{new Date(rippleet.created_at).toLocaleString()}</S.Timestamp>
-                        <S.LikeButton onClick={() => console.log(`Like rippleet with ID: ${rippleet.id}`)}>
-                            ❤️ {rippleet.likes_count}
-                        </S.LikeButton>
+                        <S.Timestamp>{new Date(rippleet.created_at).toLocaleString([], { dateStyle: "medium", timeStyle: "short" })}</S.Timestamp>
+                        <S.RippleetActionRow>
+                            <S.LikeButton onClick={() => handleLike(rippleet.id, !rippleet.liked)}>
+                                {rippleet.liked ? <FaHeart color="orange" /> : <FaRegHeart color="white" />}
+                                {rippleet.likes_count}
+                            </S.LikeButton>
+                            {rippleet.is_owner && (
+                                <>
+                                    <S.EditButton onClick={() => handleUpdate(rippleet.id, prompt("Edit your rippleet:", rippleet.content) || rippleet.content)}>
+                                        Edit
+                                    </S.EditButton>
+                                    <S.DeleteButton onClick={() => handleDelete(rippleet.id)}>Delete</S.DeleteButton>
+                                </>
+                            )}
+                        </S.RippleetActionRow>
                     </S.RippleetItem>
                 ))}
                 {isFetching && <S.Loading>Loading more...</S.Loading>}
-                {data?.next && <S.LoadMoreButton onClick={handleLoadMore}>Load More</S.LoadMoreButton>}
+                {data?.next && <Button onClick={handleLoadMore}>Load More</Button>}
             </S.RippleetList>
         </S.MiddleColumn>
     );

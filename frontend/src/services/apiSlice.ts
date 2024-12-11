@@ -62,6 +62,29 @@ export const apiSlice = createApi({
                     ]
                     : [{ type: "Rippleet", id: "LIST" }],
         }),
+        likeRippleet: builder.mutation<void, { id: number; liked: boolean }>({
+            query: ({ id, liked }) => ({
+                url: `/newsfeed/rippleets/${id}/like/`,
+                method: "POST",
+                body: { liked },
+            }),
+            invalidatesTags: (result, error, { id }) => [{ type: "Rippleet", id }],
+        }),
+        deleteRippleet: builder.mutation<void, { id: number }>({
+            query: ({ id }) => ({
+                url: `/newsfeed/rippleets/${id}/`,
+                method: "DELETE",
+            }),
+            invalidatesTags: (result, error, { id }) => [{ type: "Rippleet", id }],
+        }),
+        updateRippleet: builder.mutation<RippleetType, { id: number; content: string }>({
+            query: ({ id, content }) => ({
+                url: `/newsfeed/rippleets/${id}/`,
+                method: "PATCH",
+                body: { content },
+            }),
+            invalidatesTags: (result, error, { id }) => [{ type: "Rippleet", id }],
+        }),
     }),
 });
 
@@ -72,5 +95,8 @@ export const {
     useGetUserProfileQuery,
     useLazyGetUserProfileQuery,
     useCreateRippleetMutation,
-    useGetRippleetsQuery
+    useGetRippleetsQuery,
+    useLikeRippleetMutation,
+    useDeleteRippleetMutation,
+    useUpdateRippleetMutation,
 } = apiSlice;

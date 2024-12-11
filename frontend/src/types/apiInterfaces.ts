@@ -28,4 +28,6 @@ export interface RippleetType {
     updated_at: string;
     is_edited: boolean;
     likes_count: number;
+    liked?: boolean;
+    is_owner?: boolean;
 }
