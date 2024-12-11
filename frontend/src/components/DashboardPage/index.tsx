@@ -2,6 +2,7 @@ import Header from "../Header";
 import NavigationMenu from "../Dashboard/NavigationMenu";
 
 import * as S from "./styles";
+import Rippleets from "../Dashboard/Rippleets";
 
 const DashboardPage = () => {
     return (
@@ -12,6 +13,7 @@ const DashboardPage = () => {
                     <NavigationMenu />
                 </S.LeftColumn>
                 <S.MiddleColumn>
+                    <Rippleets />
                 </S.MiddleColumn>
                 <S.RightColumn>
                 </S.RightColumn>

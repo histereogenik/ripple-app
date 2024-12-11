@@ -3,6 +3,7 @@ from newsfeed.models import Rippleet
 
 
 class RippleetSerializer(serializers.ModelSerializer):
+    author = serializers.CharField(source="author.username", read_only=True)
     is_edited = serializers.SerializerMethodField()
     likes_count = serializers.SerializerMethodField()
 

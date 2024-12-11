@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { isTokenExpired } from "../../utils/tokenUtils";
+import { apiSlice } from "../../services/apiSlice";
 
 interface AuthState {
     token: string | null;
@@ -28,6 +29,7 @@ const authSlice = createSlice({
             state.token = null;
             localStorage.removeItem("authToken");
             localStorage.removeItem("refreshToken");
+            apiSlice.util.invalidateTags([{ type: "Profile" }]);
         },
     },
 });

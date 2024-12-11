@@ -1,6 +1,12 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { RootReducer } from '../store';
-import { LoginResponse, ProfileType, TestResponse } from '../types/apiInterfaces';
+import {
+    LoginResponse,
+    PaginatedRippleetResponse,
+    ProfileType,
+    RippleetType,
+    TestResponse
+} from '../types/apiInterfaces';
 
 export const apiSlice = createApi({
     reducerPath: 'api',
@@ -14,6 +20,7 @@ export const apiSlice = createApi({
             return headers;
         },
     }),
+    tagTypes: ["Rippleet", "Profile"],
     endpoints: (builder) => ({
         login: builder.mutation<LoginResponse, { username: string; password: string }>({
             query: (credentials) => ({
@@ -21,6 +28,7 @@ export const apiSlice = createApi({
                 method: 'POST',
                 body: credentials,
             }),
+            invalidatesTags: [{ type: "Profile" }],
         }),
         register: builder.mutation({
             query: (userData: { username: string; email: string; password: string; password_confirm: string }) => ({
@@ -31,11 +39,38 @@ export const apiSlice = createApi({
         }),
         getUserProfile: builder.query<ProfileType, void>({
             query: () => "/profiles/me/",
+            providesTags: [{ type: "Profile" }]
         }),
         test: builder.query<TestResponse, void>({
             query: () => 'auth/test/',
         }),
+        createRippleet: builder.mutation<RippleetType, { content: string }>({
+                query: (newRippleet) => ({
+                url: "/newsfeed/rippleets/",
+                method: "POST",
+                body: newRippleet,
+            }),
+            invalidatesTags: [{ type: "Rippleet", id: "LIST" }],
+        }),
+        getRippleets: builder.query<PaginatedRippleetResponse, void>({
+            query: () => "/newsfeed/rippleets/",
+            providesTags: (result) =>
+                result?.results
+                    ? [
+                        ...result.results.map(({ id }) => ({ type: "Rippleet" as const, id })),
+                        { type: "Rippleet", id: "LIST" },
+                    ]
+                    : [{ type: "Rippleet", id: "LIST" }],
+        }),
     }),
 });
 
-export const { useLoginMutation, useTestQuery, useRegisterMutation, useGetUserProfileQuery } = apiSlice;
+export const { 
+    useLoginMutation,
+    useTestQuery,
+    useRegisterMutation,
+    useGetUserProfileQuery,
+    useLazyGetUserProfileQuery,
+    useCreateRippleetMutation,
+    useGetRippleetsQuery
+} = apiSlice;

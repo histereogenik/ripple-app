@@ -25,7 +25,6 @@ export const LeftColumn = styled.div`
 
 export const MiddleColumn = styled.div`
     flex: 2;
-    padding: 1rem;
     overflow-y: auto;
     border-left: 1px solid ${colors.translucentGray};
     border-right: 1px solid ${colors.translucentGray};

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useLoginMutation } from "../../services/apiSlice";
+import { useLazyGetUserProfileQuery, useLoginMutation } from "../../services/apiSlice";
 import { useNavigate } from "react-router-dom";
 import * as S from "./styles";
 import { InputField, Button, Form } from "../../ui";
@@ -10,6 +10,7 @@ const Login = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const [login, { isLoading }] = useLoginMutation();
+    const [ triggerGetProfile ] = useLazyGetUserProfileQuery();
     const [formData, setFormData] = useState({ username: "", password: "" });
     const [error, setError] = useState<string | null>(null);
 
@@ -27,6 +28,7 @@ const Login = () => {
         try {
             const result = await login(formData).unwrap();
             dispatch(setCredentials({ access: result.access, refresh: result.refresh }));
+            await triggerGetProfile().unwrap();
             navigate("/newsfeed");
         } catch (error) {
             console.error("Login error:", error);
