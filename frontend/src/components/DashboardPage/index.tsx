@@ -1,9 +1,23 @@
-import Header from "../../components/Header";
+import Header from "../Header";
+import NavigationMenu from "../Dashboard/NavigationMenu";
 
-const DashboardPage = () => (
-    <>
-        <Header />
-    </>
-);
+import * as S from "./styles";
 
-export default DashboardPage
+const DashboardPage = () => {
+    return (
+        <>
+            <Header />
+            <S.PageContainer>
+                <S.LeftColumn>
+                    <NavigationMenu />
+                </S.LeftColumn>
+                <S.MiddleColumn>
+                </S.MiddleColumn>
+                <S.RightColumn>
+                </S.RightColumn>
+            </S.PageContainer>
+        </>
+    );
+};
+
+export default DashboardPage;

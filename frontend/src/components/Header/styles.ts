@@ -5,10 +5,11 @@ export const HeaderContainer = styled.header`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 2rem;
+    padding: 2rem;
     background-color: ${colors.black};
     color: ${colors.white};
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid ${colors.gray};
 
     @media (max-width: ${breakpoints.tablet}) {
         flex-direction: column;

@@ -9,6 +9,7 @@ export const colors = {
     gray: '#333333',
     white: '#ffffff',
     error: "#ff4c5c",
+    translucentGray: 'rgba(68, 68, 68, 0.5)',
 };
 
 export const breakpoints = {
@@ -27,7 +28,7 @@ export const GlobalCss = createGlobalStyle`
     }
 
     body {
-        background-color: ${colors.darkgray};
+        background-color: ${colors.black};
         color: ${colors.orange};
     }
 
