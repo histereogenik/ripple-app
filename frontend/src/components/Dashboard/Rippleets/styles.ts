@@ -145,13 +145,13 @@ export const RippleetActionRow = styled.div`
     }
 `;
 
-export const LikeButton = styled.button<{ liked?: boolean }>`
+export const LikeButton = styled.button<{ $liked?: boolean }>`
     display: flex;
     align-items: center;
     gap: 4px;
     background: none;
     border: none;
-    color: ${(props) => (props.liked ? colors.darkorange : colors.white)};
+    color: ${(props) => (props.$liked ? colors.darkorange : colors.white)};
     cursor: pointer;
     font-size: 1rem;
 

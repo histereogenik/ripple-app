@@ -11,6 +11,8 @@ import * as S from "./styles";
 import { Button } from "../../../ui";
 
 const Rippleets = () => {
+    const [editingRippleetId, setEditingRippleetId] = useState<number | null>(null);
+    const [editContent, setEditContent] = useState<string>("");
     const [content, setContent] = useState("");
     const [showEmojiPicker, setShowEmojiPicker] = useState(false);
     const emojiPickerRef = useRef<HTMLDivElement>(null);
@@ -61,9 +63,20 @@ const Rippleets = () => {
     const handleUpdate = async (id: number, newContent: string) => {
         try {
             await updateRippleet({ id, content: newContent });
+            stopEditing();
         } catch (error) {
             console.error("Error updating rippleet:", error);
         }
+    };
+
+    const startEditing = (rippleetId: number, content: string) => {
+        setEditingRippleetId(rippleetId);
+        setEditContent(content);
+    };
+    
+    const stopEditing = () => {
+        setEditingRippleetId(null);
+        setEditContent("");
     };
 
     const handleLoadMore = () => {
@@ -98,7 +111,7 @@ const Rippleets = () => {
                 rows={Math.max(3, Math.ceil(content.length / 50))}
                 />
                 <S.ActionRow>
-                    <S.EmojiButton onClick={() => setShowEmojiPicker((prev) => !prev)}>
+                    <S.EmojiButton type="button" onClick={() => setShowEmojiPicker((prev) => !prev)}>
                         <FaSmile />
                     </S.EmojiButton>
                     {showEmojiPicker && (
@@ -114,11 +127,42 @@ const Rippleets = () => {
                 {data?.results.map((rippleet) => (
                     <S.RippleetItem key={rippleet.id}>
                         <S.Author>{rippleet.author}</S.Author>
-                        <S.Content>{rippleet.content}</S.Content>
-                        <S.Timestamp>{new Date(rippleet.created_at).toLocaleString([], { dateStyle: "medium", timeStyle: "short" })}</S.Timestamp>
+                        {editingRippleetId === rippleet.id ? (
+                            <>
+                                <S.TextArea
+                                    value={editContent}
+                                    onChange={(e) => setEditContent(e.target.value)}
+                                    rows={Math.max(3, Math.ceil(editContent.length / 50))}
+                                />
+                                <S.RippleetActionRow>
+                                    <S.EmojiButton onClick={() => setShowEmojiPicker((prev) => !prev)}>
+                                        <FaSmile />
+                                    </S.EmojiButton>
+                                    {showEmojiPicker && (
+                                        <S.EmojiPickerWrapper ref={emojiPickerRef}>
+                                            <EmojiPicker
+                                                onEmojiClick={(emoji) => setEditContent((prev) => prev + emoji.emoji)}
+                                            />
+                                        </S.EmojiPickerWrapper>
+                                    )}
+                                    <S.PostButton onClick={() => handleUpdate(rippleet.id, editContent)}>Save</S.PostButton>
+                                    <S.PostButton onClick={stopEditing}>Cancel</S.PostButton>
+                                </S.RippleetActionRow>
+                            </>
+                        ) : (
+                            <>
+                                <S.Content>{rippleet.content}</S.Content>
+                                <S.Timestamp>
+                                    {new Date(rippleet.created_at).toLocaleString([], {
+                                        dateStyle: "medium",
+                                        timeStyle: "short"
+                                    })}
+                                </S.Timestamp>
+                            </>
+                        )}
                         <S.RippleetActionRow>
                             <S.LikeButton 
-                                liked={rippleet.liked}
+                                $liked={rippleet.liked}
                                 onClick={() => handleLike(rippleet.id, !rippleet.liked)}
                             >
                                 {rippleet.liked ? <FaHeart /> : <FaRegHeart />}
@@ -126,10 +170,18 @@ const Rippleets = () => {
                             </S.LikeButton>
                             {rippleet.is_owner && (
                                 <>
-                                    <S.EditButton onClick={() => handleUpdate(rippleet.id, prompt("Edit your rippleet:", rippleet.content) || rippleet.content)}>
+                                    <S.EditButton 
+                                        onClick={() => startEditing(rippleet.id, rippleet.content)}
+                                    >
                                         <FaPen />
                                     </S.EditButton>
-                                    <S.DeleteButton onClick={() => handleDelete(rippleet.id)}>
+                                    <S.DeleteButton
+                                        onClick={() => {
+                                            if (window.confirm("Irreversible Action: Are you sure you want to delete this rippleet?")) {
+                                                handleDelete(rippleet.id);
+                                            }
+                                        }}
+                                    >
                                         <FaTrash />
                                     </S.DeleteButton>
                                 </>
