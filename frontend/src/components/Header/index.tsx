@@ -2,7 +2,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import { logout } from "../../store/reducers/authSlice";
-import { useGetUserProfileQuery } from "../../services/apiSlice";
+import { apiSlice, useGetUserProfileQuery } from "../../services/apiSlice";
 
 import * as S from "./styles";
 import { FaCog, FaSignOutAlt } from "react-icons/fa";
@@ -15,6 +15,7 @@ const Header = () => {
 
     const handleLogout = () => {
         dispatch(logout());
+        dispatch(apiSlice.util.resetApiState());
         navigate("/login");
     };
 

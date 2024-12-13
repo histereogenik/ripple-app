@@ -137,11 +137,11 @@ export const Timestamp = styled.div`
 export const RippleetActionRow = styled.div`
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 16px;
     margin-top: 8px;
 
     @media (max-width: ${breakpoints.tablet}) {
-        gap: 8px;
+        gap: 12px;
     }
 `;
 
@@ -166,37 +166,47 @@ export const LikeButton = styled.button<{ liked?: boolean }>`
 
 export const EditButton = styled.button`
     background-color: ${colors.black};
-    border: 1px solid ${colors.lightgray};
-    border-radius: 4px;
-    padding: 4px 8px;
-    font-size: 0.9rem;
+    border: none;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
     color: ${colors.white};
+    font-size: 1rem;
 
     &:hover {
-        background-color: ${colors.translucentGray};
+        opacity: 0.8;
     }
 
     @media (max-width: ${breakpoints.tablet}) {
-        font-size: 0.85rem;
+        width: 28px;
+        height: 28px;
+        font-size: 0.9rem;
     }
 `;
 
 export const DeleteButton = styled.button`
-    background-color: ${colors.error};
-    border: 1px solid ${colors.darkorange};
-    border-radius: 4px;
-    padding: 4px 8px;
-    font-size: 0.9rem;
-    color: ${colors.white};
+    background-color: ${colors.black};
+    border: none;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
+    color: ${colors.white};
+    font-size: 1rem;
 
     &:hover {
-        background-color: ${colors.darkorange};
+        color: ${colors.error};
     }
 
     @media (max-width: ${breakpoints.tablet}) {
-        font-size: 0.85rem;
+        width: 28px;
+        height: 28px;
+        font-size: 0.9rem;
     }
 `;
 

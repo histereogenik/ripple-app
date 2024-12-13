@@ -6,7 +6,7 @@ import { useCreateRippleetMutation,
     useUpdateRippleetMutation
 } from "../../../services/apiSlice";
 import EmojiPicker from "emoji-picker-react";
-import { FaSmile, FaHeart, FaRegHeart } from "react-icons/fa";
+import { FaSmile, FaHeart, FaRegHeart, FaTrash, FaPen } from "react-icons/fa";
 import * as S from "./styles";
 import { Button } from "../../../ui";
 
@@ -117,16 +117,21 @@ const Rippleets = () => {
                         <S.Content>{rippleet.content}</S.Content>
                         <S.Timestamp>{new Date(rippleet.created_at).toLocaleString([], { dateStyle: "medium", timeStyle: "short" })}</S.Timestamp>
                         <S.RippleetActionRow>
-                            <S.LikeButton onClick={() => handleLike(rippleet.id, !rippleet.liked)}>
-                                {rippleet.liked ? <FaHeart color="orange" /> : <FaRegHeart color="white" />}
+                            <S.LikeButton 
+                                liked={rippleet.liked}
+                                onClick={() => handleLike(rippleet.id, !rippleet.liked)}
+                            >
+                                {rippleet.liked ? <FaHeart /> : <FaRegHeart />}
                                 {rippleet.likes_count}
                             </S.LikeButton>
                             {rippleet.is_owner && (
                                 <>
                                     <S.EditButton onClick={() => handleUpdate(rippleet.id, prompt("Edit your rippleet:", rippleet.content) || rippleet.content)}>
-                                        Edit
+                                        <FaPen />
                                     </S.EditButton>
-                                    <S.DeleteButton onClick={() => handleDelete(rippleet.id)}>Delete</S.DeleteButton>
+                                    <S.DeleteButton onClick={() => handleDelete(rippleet.id)}>
+                                        <FaTrash />
+                                    </S.DeleteButton>
                                 </>
                             )}
                         </S.RippleetActionRow>

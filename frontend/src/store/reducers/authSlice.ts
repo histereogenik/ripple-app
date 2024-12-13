@@ -29,8 +29,10 @@ const authSlice = createSlice({
             state.token = null;
             localStorage.removeItem("authToken");
             localStorage.removeItem("refreshToken");
-            apiSlice.util.invalidateTags([{ type: "Profile" }]);
         },
+    },
+    extraReducers: (builder) => {
+        builder.addCase(apiSlice.util.resetApiState, () => {});
     },
 });
 

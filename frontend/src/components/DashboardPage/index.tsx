@@ -1,10 +1,11 @@
 import Header from "../Header";
 import NavigationMenu from "../Dashboard/NavigationMenu";
-
-import * as S from "./styles";
 import Rippleets from "../Dashboard/Rippleets";
 
+import * as S from "./styles";
+
 const DashboardPage = () => {
+
     return (
         <>
             <Header />
