@@ -19,10 +19,6 @@ const Header = () => {
     navigate("/login")
   }
 
-  const handleEditProfile = () => {
-    navigate("/profile-settings")
-  }
-
   if (isLoading) {
     return <S.HeaderContainer>Loading...</S.HeaderContainer>
   }
@@ -47,7 +43,7 @@ const Header = () => {
           <S.UserName>{userProfile?.user.username}</S.UserName>
         </S.UserInfo>
         <S.DropdownMenu>
-          <S.MenuItem onClick={handleEditProfile}>
+          <S.MenuItem>
             <FaCog /> Edit Profile
           </S.MenuItem>
           <S.MenuItem onClick={handleLogout}>

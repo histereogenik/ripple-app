@@ -22,6 +22,7 @@ services:
       - "80:8080"  # Nginx serves on port 80
     volumes:
       - ./nginx/conf.d:/etc/nginx/conf.d  # Custom Nginx configs
+      - ./frontend/dist:/usr/share/nginx/html  # Serve frontend from build directory
       - static_volume:/app/staticfiles  # Share static files
     depends_on:
       - backend
