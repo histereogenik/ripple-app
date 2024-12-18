@@ -15,7 +15,11 @@ SECRET_KEY = "django-insecure-yfg1v=7f3%7j91c63kzgb!1yajuj5u#=l#1u#^!0f_*u$to(ha
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DJANGO_DEBUG", "False") == "True"
 
-ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "localhost").split()
+ALLOWED_HOSTS = [
+    "localhost",
+    "127.0.0.1",
+    "ripple-app-backend.onrender.com",
+]
 
 # Application definition
 
