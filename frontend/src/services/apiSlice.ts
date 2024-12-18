@@ -80,14 +80,14 @@ export const apiSlice = createApi({
         method: "POST",
         body: { liked },
       }),
-      invalidatesTags: (result, error, { id }) => [{ type: "Rippleet", id }],
+      invalidatesTags: (_result, _error, { id }) => [{ type: "Rippleet", id }],
     }),
     deleteRippleet: builder.mutation<void, { id: number }>({
       query: ({ id }) => ({
         url: `/newsfeed/rippleets/${id}/`,
         method: "DELETE",
       }),
-      invalidatesTags: (result, error, { id }) => [{ type: "Rippleet", id }],
+      invalidatesTags: (_result, _error, { id }) => [{ type: "Rippleet", id }],
     }),
     updateRippleet: builder.mutation<
       RippleetType,
@@ -98,7 +98,7 @@ export const apiSlice = createApi({
         method: "PATCH",
         body: { content },
       }),
-      invalidatesTags: (result, error, { id }) => [{ type: "Rippleet", id }],
+      invalidatesTags: (_result, _error, { id }) => [{ type: "Rippleet", id }],
     }),
   }),
 })
