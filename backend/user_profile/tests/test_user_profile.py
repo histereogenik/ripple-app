@@ -18,8 +18,10 @@ class UserProfileTests(APITestCase):
         url = reverse("userprofile-detail", kwargs={"user_id": self.user1.id})
         response = self.client.get(url)
 
+        #import pdb; pdb.set_trace()
+
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["user"], self.user1.id)
+        self.assertEqual(response.data["user"]["username"], self.user1.username)
         self.assertEqual(
             response.data["profile_picture"],
             f"https://robohash.org/{self.user1.username}.png",
@@ -33,7 +35,7 @@ class UserProfileTests(APITestCase):
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["user"], self.user2.id)
+        self.assertEqual(response.data["user"]["username"], self.user2.username)
         self.assertEqual(
             response.data["profile_picture"],
             f"https://robohash.org/{self.user2.username}.png",
