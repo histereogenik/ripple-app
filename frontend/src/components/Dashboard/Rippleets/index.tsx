@@ -3,12 +3,13 @@ import { useCreateRippleetMutation,
     useDeleteRippleetMutation,
     useGetRippleetsQuery,
     useLikeRippleetMutation,
-    useUpdateRippleetMutation
+    useUpdateRippleetMutation,
 } from "../../../services/apiSlice";
 import EmojiPicker from "emoji-picker-react";
 import { FaSmile, FaHeart, FaRegHeart, FaTrash, FaPen } from "react-icons/fa";
 import * as S from "./styles";
 import { Button } from "../../../ui";
+import { RippleetType } from "../../../types/apiInterfaces";
 
 const Rippleets = () => {
     const [editingRippleetId, setEditingRippleetId] = useState<number | null>(null);
@@ -16,13 +17,45 @@ const Rippleets = () => {
     const [content, setContent] = useState("");
     const [showEmojiPicker, setShowEmojiPicker] = useState(false);
     const emojiPickerRef = useRef<HTMLDivElement>(null);
+    
     const [createRippleet] = useCreateRippleetMutation();
     const [likeRippleet] = useLikeRippleetMutation();
     const [deleteRippleet] = useDeleteRippleetMutation();
     const [updateRippleet] = useUpdateRippleetMutation();
-    const [page, setPage] = useState(1);
-    const { data, isFetching, isError } = useGetRippleetsQuery();
 
+    const [combinedRippleets, setCombinedRippleets] = useState<RippleetType[]>([]);
+    const [nextCursor, setNextCursor] = useState<string | null>(null);
+    const [isLoadingMore, setIsLoadingMore] = useState(false);
+    
+    const { data, isFetching, isError } = useGetRippleetsQuery({});
+    
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (emojiPickerRef.current && !emojiPickerRef.current.contains(event.target as Node)) {
+                setShowEmojiPicker(false);
+            }
+        };
+        
+        document.addEventListener("pointerdown", handleClickOutside);
+        
+        return () => document.removeEventListener("pointerdown", handleClickOutside);
+    }, [])
+    
+    useEffect(() => {
+        if (data?.results) {
+            setCombinedRippleets((prev) => {
+                if (isLoadingMore) {
+                    const existingIds = new Set(prev.map((rippleet) => rippleet.id));
+                    const uniqueRippleets = data.results.filter((rippleet) => !existingIds.has(rippleet.id));
+                    return [...prev, ...uniqueRippleets];
+                }
+                return data.results;
+            });
+    
+            setNextCursor(data.next);
+        }
+    }, [data, isLoadingMore]);
+    
     const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         setContent(e.target.value);
     };
@@ -79,23 +112,34 @@ const Rippleets = () => {
         setEditContent("");
     };
 
-    const handleLoadMore = () => {
-        if (data?.next) {
-            setPage(page + 1);
+    const handleLoadMore = async () => {
+        if (nextCursor) {
+            try {
+                setIsLoadingMore(true);
+    
+                const token = localStorage.getItem("authToken");
+                const response = await fetch(nextCursor, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+                if (!response.ok) throw new Error("Failed to load more rippleets");
+                const nextPageData = await response.json();
+
+                setCombinedRippleets((prev) => {
+                    const existingIds = new Set(prev.map((rippleet) => rippleet.id));
+                    const uniqueRippleets = nextPageData.results.filter((rippleet: RippleetType) => !existingIds.has(rippleet.id));
+                    return [...prev, ...uniqueRippleets];
+                });
+    
+                setNextCursor(nextPageData.next);
+            } catch (error) {
+                console.error("Error loading more rippleets:", error);
+            } finally {
+                setIsLoadingMore(false);
+            }
         }
     };
-    
-    useEffect(() => {
-        const handleClickOutside = (event: MouseEvent) => {
-            if (emojiPickerRef.current && !emojiPickerRef.current.contains(event.target as Node)) {
-                setShowEmojiPicker(false);
-            }
-        };
-
-        document.addEventListener("pointerdown", handleClickOutside);
-        
-        return () => document.removeEventListener("pointerdown", handleClickOutside);
-    }, [])
 
     if (isFetching && !data) return <p>Loading...</p>;
     if (isError) return <p>Error loading rippleets.</p>;
@@ -124,7 +168,7 @@ const Rippleets = () => {
             </S.FormContainer>
 
             <S.RippleetList>
-                {data?.results.map((rippleet) => (
+                {combinedRippleets.map((rippleet) => (
                     <S.RippleetItem key={rippleet.id}>
                         <S.Author>{rippleet.author}</S.Author>
                         {editingRippleetId === rippleet.id ? (
@@ -189,8 +233,11 @@ const Rippleets = () => {
                         </S.RippleetActionRow>
                     </S.RippleetItem>
                 ))}
-                {isFetching && <S.Loading>Loading more...</S.Loading>}
-                {data?.next && <Button onClick={handleLoadMore}>Load More</Button>}
+                {nextCursor && (
+                    <Button onClick={handleLoadMore} disabled={isFetching || isLoadingMore}>
+                        {isLoadingMore ? "Loading..." : "Load More"}
+                    </Button>
+                )}
             </S.RippleetList>
         </S.MiddleColumn>
     );

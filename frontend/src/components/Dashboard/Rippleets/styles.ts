@@ -92,7 +92,7 @@ export const RippleetList = styled.div`
 export const RippleetItem = styled.div`
     display: flex;
     flex-direction: column;
-    padding: 16px;
+    padding: 16px 0 16px 0;
     border-bottom: 1px solid ${colors.translucentGray};
     background-color: ${colors.black};
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);

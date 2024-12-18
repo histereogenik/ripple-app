@@ -52,8 +52,11 @@ export const apiSlice = createApi({
             }),
             invalidatesTags: [{ type: "Rippleet", id: "LIST" }],
         }),
-        getRippleets: builder.query<PaginatedRippleetResponse, void>({
-            query: () => "/newsfeed/rippleets/",
+        getRippleets: builder.query<PaginatedRippleetResponse, { cursor?: string }>({
+            query: ({ cursor } = {}) => ({
+                url: "/newsfeed/rippleets/",
+                params: cursor ? { cursor } : {},
+            }),
             providesTags: (result) =>
                 result?.results
                     ? [
@@ -96,6 +99,7 @@ export const {
     useLazyGetUserProfileQuery,
     useCreateRippleetMutation,
     useGetRippleetsQuery,
+    useLazyGetRippleetsQuery,
     useLikeRippleetMutation,
     useDeleteRippleetMutation,
     useUpdateRippleetMutation,
