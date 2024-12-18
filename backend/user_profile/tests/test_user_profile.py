@@ -18,7 +18,7 @@ class UserProfileTests(APITestCase):
         url = reverse("userprofile-detail", kwargs={"user_id": self.user1.id})
         response = self.client.get(url)
 
-        #import pdb; pdb.set_trace()
+        # import pdb; pdb.set_trace()
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["user"]["username"], self.user1.username)

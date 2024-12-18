@@ -18,8 +18,8 @@ class RippleetSerializer(serializers.ModelSerializer):
             "created_at",
             "updated_at",
             "is_edited",
-            "likes_count", 
-            "liked", 
+            "likes_count",
+            "liked",
             "is_owner",
         ]
         read_only_fields = ["author", "created_at", "updated_at", "is_edited"]
@@ -39,7 +39,7 @@ class RippleetSerializer(serializers.ModelSerializer):
     def get_is_owner(self, obj):
         user = self.context["request"].user
         return user == obj.author
-    
+
     def create(self, validated_data):
         request = self.context.get("request")
         user = request.user
