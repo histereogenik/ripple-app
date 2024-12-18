@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom"
+import { Navigate, Route, Routes } from "react-router-dom"
 import LoginPage from "./components/LoginPage"
 import Registration from "./components/Registration"
 import DashboardPage from "./components/DashboardPage"
@@ -31,6 +31,7 @@ const RoutesComponent = () => (
         </ProtectedRoute>
       }
     />
+    <Route path="*" element={<Navigate to="/login" replace />} />
   </Routes>
 )
 
