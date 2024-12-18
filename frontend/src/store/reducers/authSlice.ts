@@ -1,30 +1,40 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit"
+import { isTokenExpired } from "../../utils/tokenUtils"
+import { apiSlice } from "../../services/apiSlice"
 
 interface AuthState {
-    token: string | null;
-    isAuthenticated: boolean;
+  token: string | null
 }
 
+const token = localStorage.getItem("authToken")
+const isTokenValid = token && !isTokenExpired(token)
+
 const initialState: AuthState = {
-    token: null,
-    isAuthenticated: false,
-};
+  token: isTokenValid ? token : null,
+}
 
 const authSlice = createSlice({
-    name: "auth",
-    initialState,
-    reducers: {
-        loginSuccess(state, action: PayloadAction<string>) {
-            state.token = action.payload;
-            state.isAuthenticated = true;
-        },
-        logout(state) {
-            state.token = null;
-            state.isAuthenticated = false;
-        },
+  name: "auth",
+  initialState,
+  reducers: {
+    setCredentials: (
+      state,
+      action: PayloadAction<{ access: string; refresh: string }>
+    ) => {
+      state.token = action.payload.access
+      localStorage.setItem("authToken", action.payload.access)
+      localStorage.setItem("refreshToken", action.payload.refresh)
     },
-});
+    logout: (state) => {
+      state.token = null
+      localStorage.removeItem("authToken")
+      localStorage.removeItem("refreshToken")
+    },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(apiSlice.util.resetApiState, () => {})
+  },
+})
 
-export const { loginSuccess, logout } = authSlice.actions;
-
-export default authSlice.reducer;
+export const { setCredentials, logout } = authSlice.actions
+export default authSlice.reducer
