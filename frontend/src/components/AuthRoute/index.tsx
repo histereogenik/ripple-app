@@ -1,15 +1,15 @@
-import { useSelector } from "react-redux";
-import { Navigate } from "react-router-dom";
-import { RootReducer } from "../../store";
+import { useSelector } from "react-redux"
+import { Navigate } from "react-router-dom"
+import { RootReducer } from "../../store"
 
 interface AuthRouteProps {
-    children: JSX.Element;
+  children: JSX.Element
 }
 
 const AuthRoute = ({ children }: AuthRouteProps) => {
-    const token = useSelector((state: RootReducer) => state.auth.token);
+  const token = useSelector((state: RootReducer) => state.auth.token)
 
-    return token ? <Navigate to="/newsfeed" replace /> : children;
-};
+  return token ? <Navigate to="/newsfeed" replace /> : children
+}
 
-export default AuthRoute;
+export default AuthRoute

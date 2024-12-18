@@ -1,21 +1,21 @@
-import { createGlobalStyle } from 'styled-components';
+import { createGlobalStyle } from "styled-components"
 
 export const colors = {
-    black: '#000000',
-    orange: '#ff7300',
-    darkorange: '#e86600',
-    darkgray: '#222222',
-    lightgray: '#444444',
-    gray: '#333333',
-    white: '#ffffff',
-    error: "#ff4c5c",
-    translucentGray: 'rgba(68, 68, 68, 0.5)',
-};
+  black: "#000000",
+  orange: "#ff7300",
+  darkorange: "#e86600",
+  darkgray: "#222222",
+  lightgray: "#444444",
+  gray: "#333333",
+  white: "#ffffff",
+  error: "#ff4c5c",
+  translucentGray: "rgba(68, 68, 68, 0.5)",
+}
 
 export const breakpoints = {
-    desktop: '1024px',
-    tablet: '767px',
-};
+  desktop: "1024px",
+  tablet: "767px",
+}
 
 export const GlobalCss = createGlobalStyle`
     * {
@@ -41,5 +41,4 @@ export const GlobalCss = createGlobalStyle`
             max-width: 80%;
         }
     }
-`;
-
+`
