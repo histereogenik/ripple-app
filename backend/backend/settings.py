@@ -19,7 +19,7 @@ ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
     "ripple-app-backend.onrender.com",
-    "https://ripple-app-ikz8.onrender.com",
+    "ripple-app-ikz8.onrender.com",
 ]
 
 # Application definition
