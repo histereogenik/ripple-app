@@ -54,5 +54,5 @@ RUN poetry run python manage.py collectstatic --noinput
 # Expose application port
 EXPOSE 8000
 
-# Gunicorn startup command
-CMD ["poetry", "run", "gunicorn", "-c", "gunicorn_config.py", "backend.wsgi:application"]
+# Run migrations and start Gunicorn
+CMD ["sh", "-c", "poetry run python manage.py migrate && poetry run gunicorn -c gunicorn_config.py backend.wsgi:application"]
